@@ -8,34 +8,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class GreetingController {
-	@Autowired
-	private MessegeRepo messegeRepo;
-	private final AtomicLong counter = new AtomicLong();
+    @Autowired
+    private MessegeRepo messegeRepo;
+    private final AtomicLong counter = new AtomicLong();
 
-	@GetMapping("/put")
-	public Greeting greeting(@RequestParam String name) {
-		Message message = new Message();
-		message.setText(name);
-		messegeRepo.save(message);
-//		Optional<String> first = massegeRepo.findAll()
-//				.stream()
-//				.filter(message1 -> message1.getId() != null && message1.getId().equals(1))
-//				.map(message1 -> message1.getText())
+    @GetMapping("/put")
+    public Greeting greeting(@RequestParam String name) {
+        Message message = new Message();
+        message.setText(name);
+        messegeRepo.save(message);
+        return new Greeting(message.getId(), message.getText());
+    }
 
-//				.findFirst();
-		return new Greeting(message.getId(), message.getText());
-	}
-
-	@GetMapping("/delete/{id}")
-	public String deleteUser(@PathVariable("id") Integer id){
-//		Message message = messegeRepo.findById(id);
-//		messegeRepo.delete(messege);
-		return "null";
-	}
+    @GetMapping("/delete/{id}")
+    public Message deleteUser(@PathVariable("id") Integer id) {
+        Message message = messegeRepo.findById(id).orElse(null);
+        messegeRepo.deleteById(id);
+        return message;
+    }
 
 }
