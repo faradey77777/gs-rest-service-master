@@ -16,7 +16,7 @@ public class Controller {
         return messegeRepo.findById(id).orElse(null);
     }
 
-    @PostMapping @PutMapping("/{name}")
+    @PostMapping @PutMapping("/")
     public Message mapping(@RequestBody String name) {
         Message message = new Message();
         message.setText(name);
@@ -24,7 +24,7 @@ public class Controller {
         return message;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@RequestBody Integer id) {
         Message message1 = messegeRepo.findById(id).orElse(null);
